@@ -68,7 +68,7 @@ ga_domain: huangxuan.me
 
 # Sidebar settings
 sidebar: true                           # whether or not using Sidebar.
-sidebar-about-description: "关于一只猫和一只狗。关于学习、工作和玩。"
+sidebar-about-description: "关于学习、工作和玩。"
 sidebar-avatar: /img/CAD.jpg      # use absolute URL, seeing it's used in both `/` and `/about/`
 
 
