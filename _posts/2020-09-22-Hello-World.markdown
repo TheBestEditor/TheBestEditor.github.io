@@ -3,7 +3,7 @@ layout:     post
 title:      "Hello World！"
 subtitle:   "A beginning"
 date:       2020-09-22
-author:     "Hux"
+author:     "Shooting"
 header-img: "img/home-bg-o.jpg"
 ---
 
