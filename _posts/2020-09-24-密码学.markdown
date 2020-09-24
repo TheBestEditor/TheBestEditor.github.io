@@ -1,0 +1,1023 @@
+---
+layout:     post
+title:      "密码学"
+subtitle:   "图解密码技术读书笔记"
+date:       2020-09-24
+author:     "Shooting"
+header-img: "img/home-bg-o.jpg"
+catalog: true
+tags:
+    - 学习
+---
+
+# 密码技术概览
+
+发送者（Alice）：发送信息的人
+
+接受者（Bob）：接受信息的人
+
+窃听者（Eve）：并不一定是人，可能是安装在通信设备上的某种窃听器，或安装在邮件软件和服务器上的某些程序
+
+__运用**密码技术**保证邮件的**机密性**。  __
+
+明文（plaintext）：加密之前的消息（小写字母表示）
+
+密文（ciphertext）：加密之后的消息（大写字母表示）
+
+解密：**正当的接收者**将密文还原为明文
+
+密码破译（密码分析）：接收者以外的其他人试图将密文还原为明文
+
+破译者：进行破译的人
+
+
+# **密钥（key）**
+
+加密和解密的时候都需要[密钥](agenda://note/5B06D97B-7286-4BFB-830C-9F4772B3C813)
+
+[对称密码](agenda://note/AF96144E-AEEF-4D52-BF42-F81F60A8125C)（symmetric cryptography）：在加密和解密时使用同一种密钥的方式（别名：公共密钥密码、传统密码、私钥密码、共享密钥密码等）
+
+[公钥密码](agenda://note/EF94C4BB-7DA2-4DBB-842A-1CE0154BBD82)（public-key cryptography）：在加密和解密的时候使用不同密钥的方式，又称非对称密码（aymmetric cryptography）
+
+[混合密码系统](agenda://note/3CC45AFE-FEEE-471D-BAA6-A298BA668072)（hybrid cryptosystem）：将对称密码和公钥密码结合起来的密码方式
+
+
+# 其他密码技术
+
+[单向散列函数](agenda://note/C3764C11-40DB-4FB9-AC6B-0C67F5F7005C)（one-way hash function）：保证完整性（integrity）
+
+[消息认证码](agenda://note/E4FCB003-2833-4833-8B14-CE5B3272A460)（message authentication code）：保证完整性、提供认证（authentication）
+
+[数字签名](agenda://note/9D930DB3-1825-483B-B67C-0F6BCE6D3E69)（digital signature）：对数字签名进行验证（verify）能够确保完整性、提供认证、防止否认
+
+[伪随机数生成器](agenda://note/7C70106F-F3A0-4A8C-A92F-83F0356C27B5)（Pseudo Random Number Generator，PRNG）：能够模拟产生随机数列的算法，承担着密钥生成的职责。如：在Web中进行SSL/TLS通信时，会用PRNG生成一个仅用于当前通信的临时密钥（会话密钥）
+
+
+# 隐写术与数字水印
+
+隐写术：隐藏消息本身
+
+数字水印：将著作权拥有者及购买者的信息嵌入文件中的技术
+
+
+
+
+
+---
+
+# 古典密码
+
+
+# 简单代换密码
+
+破解原理：[www.jianshu.com/p/c40f45d0d44b](https://www.jianshu.com/p/c40f45d0d44b)
+
+破解网站：[quipqiup.com](https://quipqiup.com/)
+
+各种解码网站：[blog.csdn.net/dfdhxb995397/article/details/101385063](https://blog.csdn.net/dfdhxb995397/article/details/101385063)
+
+
+
+
+
+---
+
+# Enigma密码机
+
+二战时期德军使用的密码机，简单替换密码的加强版
+
+Bombe：图灵发明的Enigma破译机
+
+原理：[www.zhihu.com/question/28397034/answer/41739506](https://www.zhihu.com/question/28397034/answer/41739506)
+
+b站介绍视频：【自制中字】二战德军 Enigma 密码机原理演示与破解 [www.bilibili.com/video/av21919076/？p=1&share_source=more&share_medium=iphone&bbid=Z8445889DAE1C1CD4EA5B91347421A9AAC00&ts=1579659145](https://www.bilibili.com/video/av21919076/?p=1&share_source=more&share_medium=iphone&bbid=Z8445889DAE1C1CD4EA5B91347421A9AAC00&ts=1579659145)
+
+简单c++实现：[blog.csdn.net/a358463121/article/details/44907709](https://blog.csdn.net/a358463121/article/details/44907709)
+
+另一个c++实现：[blog.csdn.net/kyoma/article/details/51857944](https://blog.csdn.net/kyoma/article/details/51857944)
+
+网页模拟器：[enigmaco.de/enigma/enigma.html](http://enigmaco.de/enigma/enigma.html)
+
+
+
+
+
+---
+
+# 对称密码（symmetric cryptography）
+
+
+# **XOR**（异或）运算
+
+两个相同的数进行XOR运算结果为0；__进行两次XOR会回到原来的结果__
+
+__用蒙版理解__
+
+
+# 一次性密码本（one-time pad）
+
+加密：将明文与一串随机的比特序列进行XOR运算
+
+解密：用密文和密钥进行XOR运算
+
+特点：无条件安全、理论上无法破译
+
+不实用性：密钥的配送、保存、重用、同步、生成问题
+
+many（two） time pad attack：[blog.csdn.net/Lynn_coder/article/details/101179763](https://blog.csdn.net/Lynn_coder/article/details/101179763)
+
+
+# DES（Data Encryption Standard）
+
+1977年被美国联邦信息处理标准采用的一种对称密码，现已能够被暴力破解
+
+以64bits的明文为一个单位，加密64bits的密文，密钥长度为56bits，因此也是一种分组密码（block cipher）
+
+
+### DES的结构：Feistel网络
+
+> Feistel的加密步骤称为轮（round），DES是一种16轮循环的Feistel网络
+
+> 每轮的具体步骤：
+
+	1. 将输入的数据分为左右两部分
+	2. 将输入的右侧直接发送到输出的右侧
+	3. 将输入的右侧发送到轮函数f
+	4. 轮函数根据右侧数据和子密钥（subkey，48bits），计算出一串看上去是随机的比特序列
+	5. 将上一步得出的比特序列与左侧数据进行XOR运算，并将结果作为加密后的左侧
+	6. 将输出的左右侧数据对调，重复（最后一轮不用对调）
+
+> 解密：与加密步骤相同，按照相反的顺序使用子密钥即可
+
+> Feistel的性质：
+
+	1. 轮数可以任意增加
+	2. 轮函数f被设计的任意复杂都可以解密，无需考虑f的反函数的存在性
+	3. 加密和解密可以用完全相同的结构来实现
+
+4个弱密钥
+
+
+### DES补充链接
+
+c语言实现：[www.iteye.com/topic/478024/](https://www.iteye.com/topic/478024/)
+
+c++实现：[blog.csdn.net/u012596172/article/details/40118633](https://blog.csdn.net/u012596172/article/details/40118633)
+
+
+### 三重DES（3DES）
+
+> 将DES重复三次
+
+> 加密过程：加密->解密->加密
+
+> DES-EDE3：三次使用的密钥各不相同
+
+> DES-EDE2：两次加密使用的密钥相同
+
+> 具有向下兼容性（三次使用相同的密钥等于普通的DES）
+
+> 解密过程：解密->加密->解密（密钥使用顺序与加密相反）
+
+
+
+
+# AES（Advanced Encryption Standard）
+
+在2001年取代DES的新标准
+
+
+# Rijndael
+
+比利时密码学家设计的分组密码。2000年被选为AES
+
+__分组长度：128/192/256__
+
+__密钥长度：128/192/256__
+
+__对应轮数：10轮/12轮/14轮__
+
+
+### Rijndael的结构：SP Network
+
+> Rijndael的输入分组为128bits，16bytes。算法同样由多个轮组成
+
+> 每轮加密步骤：SubBytes（逐字节替换）-> ShiftRows（平移行）-> MixColumns（混合列）-> AddRoundKey（与轮密钥进行XOR）
+
+> 解密：AddRoundKey（与轮密钥进行XOR）-> InvMixColumns（混合列）-> InvShiftRows（平移行）-> InvSubBytes（逐字节替换）
+
+
+
+
+
+---
+
+# 分组密码（block cipher）
+
+对称密码算法分为分组密码与流密码两种
+
+分组密码（block cipher）：每次处理特定长度的一块数据，这里的“一块”就称为分组（block）。一个分组的比特数就称为分组长度（block length）
+
+流密码（stream cipher）：对一串数据流进行连续处理，也称序列密码
+
+
+# 分组密码的模式（mode）
+
+ECB模式：Electronic CodeBook mode（电子密码本模式）
+
+- 直接分组加密的模式 -> 明文内容重复会导致密文内容重复
+- 需要padding
+
+CBC模式：Cipher Block Chaining mode（密文分组链接模式）
+
+- 加密：Ci = Ek(Ci-1 XOR Pi)
+- 解密：Pi = Ek(Ci) XOR Ci-1
+- 1个密文块的破坏会影响2个明文分组
+- 初始向量IV
+	- 随机的，__具有不可预测性__
+	- 不需保密，但是要保证不能被他人修改
+- 需要padding
+
+以下3种mode可以将分组密码算法转化为流密码加密算法（都不需要padding）：
+
+CFB模式：Cipher FeedBack mode（密文反馈模式）
+
+- 移位寄存器的初始值是固定的
+- 解密时一个密文块损坏影响（分组长度/s）个明文块
+
+  
+
+OFB模式：Output FeedBack mode（输出反馈模式） 
+
+- 加密：Ci = Pi XOR E(k,Oi-1)
+- 解密：Pi = Ci XOR E(k,Oi-1)
+- 需要共同的移位寄存器
+- 一个单元损坏只影响对应单元
+- 抗篡改能力差
+
+CTR模式：CounTeR mode（计数器模式） 
+
+- 加密：Ci = Pi XOR E(k,counter+i-1)
+- 解密：Pi = Ci XOR E(k,counter+i-1)
+- 一个单元损坏只影响对应单元
+- 支持并行计算
+
+
+
+
+---
+
+# 公钥密码（public-key cryptography）
+
+
+# 公钥通信流程
+
+__通信过程由接收者Bob启动，公钥加密，私钥解密__ 
+
+1. 接收者Bob生成一个包含公钥和私钥的密钥对。私钥由Bob自行保管。
+2. Bob将自己的公钥发送给发送者Alice，表示请Alice用这个公钥对消息进行加密并发送给他（Bob的公钥被窃听者Eve截获也没关系）
+3. Alice用Bob的公钥对信息进行加密，加密后的消息只有用Bob的私钥才能解密
+4. Alice将加密后的密文发送给Bob（密文被Eve截获也没关系，Eve可能有Bob的公钥，但用Bob的公钥无法进行解密）
+5. Bob用自己的私钥对密文进行解密
+
+
+# RSA #star
+
+最广泛的公钥密码算法，1978年由Rivest-Shamir-Adleman三人共同发明
+
+
+### 密钥对
+
+> 公钥：（E，N）
+
+> 私钥：（D，N）
+
+
+### 加密
+
+> 密文=明文^E(mod N)
+
+
+### 解密
+
+> 明文=密文^D(mod N)
+
+
+### 生成密钥对#star
+
+1. 求N：准备两个很大的质数p、q；N = p * q
+2. 求L：L = lcm ( p-1, q-1 ) （L是p-1和q-1的最小公倍数）
+3. 求E：1 < E < L 且 gcd ( E, L ) = 1（E与L互质）
+4. 求D：1 < D <L 且 E * D mod L = 1
+
+
+### 对RSA的攻击
+
+密码破译者知道的信息：密文、E和N（公钥）
+
+密码破译者不知道的信息：明文、D（私钥保密部分）、__p、q、L__
+
+- 通过密文求明文：求离散对数问题
+- 通过暴力破解求出D：1024bits以上长度遍历
+- 通过E和N求出D：由于E * D mod L = 1，而L = lcm ( p-1, q-1 )，因此__知道p、q即能求出D__
+	- 对N分解质因数求出p、q：对大整数进行质因数分解高效算法
+	- 推测p、q：p、q为PRNG生成，通过PRNG算法漏洞推测p、q
+	- 不需要知道pq，直接求D……？
+- 中间人Mallory攻击（针对公钥通信流程）：对发送者伪装成接收者，对接受者伪装成发送者（无法确定公钥是否属于合法的通信对象 -> 需要认证）
+
+
+### rsa算法编程补充链接
+
+现代密码学中的数论基础知识梳理：[www.cnblogs.com/qcblog/p/8976017.html](https://www.cnblogs.com/qcblog/p/8976017.html)
+
+细致理解RSA：[www.cnblogs.com/qcblog/p/9011834.html](https://www.cnblogs.com/qcblog/p/9011834.html)
+
+rsa算法介绍+二进制平方-乘算法：[www.cnblogs.com/idreamo/p/9411265.html](https://www.cnblogs.com/idreamo/p/9411265.html)
+
+质数表：[www.doc88.com/p-7814802766551.html](http://www.doc88.com/p-7814802766551.html)
+
+扩展欧几里得算法：[www.cnblogs.com/zhanhonhao/p/11329772.html](https://www.cnblogs.com/zhanhonhao/p/11329772.html)
+
+关于公钥指数e的选取：[blog.chinaunix.net/uid-21880738-id-1813145.html](http://blog.chinaunix.net/uid-21880738-id-1813145.html)
+
+
+
+
+# 其他公钥密码
+
+- ElGamal方式：利用mod N 下求离散对数的困难度
+- Rabin方式：利用mod N 下求平方根的困难度
+- 椭圆曲线密码：利用将椭圆曲线上的特定点进行特殊的乘法运算的逆运算的困难度
+
+
+
+
+---
+
+# 混合密码系统（hybrid cryptosystem）
+
+混合密码系统：将消息通过[对称密码](agenda://note/AF96144E-AEEF-4D52-BF42-F81F60A8125C)加密，将加密消息时的密钥通过[公钥密码](agenda://note/EF94C4BB-7DA2-4DBB-842A-1CE0154BBD82)加密。
+
+目的：提高处理速度
+
+组成机制：
+
+- 用对称密码加密消息
+- 通过PRNG生成对称密码加密中使用的会话密钥
+- 用公钥密码加密会话密钥
+- 从混合密码系统外部赋予公钥密码加密时使用的密钥
+
+__会话密钥（session key）是对称密码的密钥，同时是公钥密码的明文__
+
+加密：加密消息 -> 加密会话密钥 -> 组合
+
+解密：分离 -> 解密会话密钥 -> 解密消息
+
+
+
+
+
+---
+
+# 单向散列函数（one-way hash function）
+
+单向散列函数可以根据输入的消息（message）的内容计算出散列值（hash value），散列值可以被用来检查消息的完整性（消息没有被篡改）。
+
+
+# 性质
+
+- 根据任意长度的消息计算出固定长度的散列值 
+- 能够快速计算
+- 抗碰撞性：两个不同的消息产生同一个散列值的情况称为碰撞（collision）
+	- 强抗碰撞性：对于任意给定的数据块x，找到满足 H(y) = H(x) 的y不等于x在计算上是不可行的
+	- 弱抗碰撞性：找到满足 H(x) = H(y) 的任意一对 (x,y) 在计算上是不可行的
+- 单向性：根据消息可计算散列值，但根据散列值无法反算出消息
+
+
+# 应用
+
+- 基于口令的加密（Password Based Encryption，PBE）
+- 构造消息认证码
+- 数字签名
+- 构造伪随机数生成器（利用单向性）
+- 构造一次性口令（one-time password）
+- 区块链/加密数字货币：[www.jianshu.com/p/428b3fedfc25](https://www.jianshu.com/p/428b3fedfc25)
+
+
+# 具体例子
+
+ 
+
+c语言实现SHA-256算法：[blog.csdn.net/maxzero/article/details/81773443](https://blog.csdn.net/maxzero/article/details/81773443)
+
+
+# 对散列函数的攻击
+
+- 暴力破解：试图破解单向散列函数的“弱抗碰撞性”的攻击————已知x，H(x)，寻找y!=x，H(y)=H(x)。（存在性：鸽巢原理；尝试次数纯粹由散列值长度决定）
+- 生日攻击：试图破解“强抗碰撞性”的攻击————寻找满足 H(x) = H(y) 的任意一对 (x,y)（生日悖论）
+
+
+
+
+---
+
+# 消息认证码（MAC）
+
+消息认证码（message authentication code，MAC）：一种确认完整性并进行认证的技术。输入包括任意长度的**消息**和一个发送者与接收者之间的__**共享密钥k**__，输出固定长度的数据——MAC值
+
+
+# 使用步骤
+
+- Alice和Bob事先共享密钥
+- Alice根据消息计算MAC值（使用__共享密钥__）
+- Alice将消息和MAC值两者发送给Bob
+- Bob根据接收到的消息计算MAC值，并与收到的MAC值进行对比
+- 如果两个MAC值一致，则Bob可以断定消息来自Alice（认证成功），若不一致，则可断定消息不是来自Alice（认证失败）
+
+应用：SWIFT、IPsec、SSL/TLS
+
+实现方法：使用单向散列函数、分组密码、公钥密码、流密码等
+
+
+# HMAC
+
+使用单向散列函数构造消息认证码的方法
+
+
+### HAMC的计算步骤
+
+1. 密钥填充
+2. 填充后的密钥与ipadXOR，得到ipadkey
+3. 将ipadkey与消息组合
+4. 将第三步的结果计算散列值
+5. 填充后的密钥与opadXOR，得到opadkey
+6. 将第四步得到的散列值拼在opadkey后面
+7. 将第六步的结果计算散列值
+
+
+# 对消息认证码的攻击
+
+
+### 重放攻击（replay attack）
+
+Mallory窃听并保存Alice发送的消息与正确的MAC值，并反复发送给Bob（eg：将汇款100万元的请求重复100次）
+
+对重放攻击的防御：序号、时间戳、nonce
+
+
+### 密钥推测攻击
+
+和对单向散列函数的攻击一样，对消息认证码也可以进行暴力破解和生日攻击。对于消息认证码来说，应保证Mallory无法根据MAC值反算出密钥，或推测出人为选定的密钥
+
+
+# 局限性
+
+无法防止否认、无法向第三方证明
+
+
+
+
+
+---
+
+# 数字签名（digital signature）
+
+__简单来说，就是把公钥密码反过来用实现的（私钥加密，公钥解密）__
+
+使用数字签名可以识别**篡改**和**伪装**，还可以防止**否认**
+
+生成消息签名：Alice完成（私钥加密）
+
+验证数字签名：Bob或第三方验证者Victor完成（公钥解密）
+
+__私钥加密后生成的密文并非用于保证机密性，而是被用于代表一种只有持有该密钥的人才能够生成的信息（认证符号）__
+
+
+# 数字签名的方法
+
+- 直接对消息签名
+- 对消息的散列值签名
+	- Alice用单向散列函数计算消息的散列值
+	- Alice用自己的私钥对散列值加密
+	- Alice将消息和签名发送给Bob
+	- Bob用Alice的公钥对收到的签名进行解密
+	- Bob将签名解密后得到的散列值与Alice直接发送的消息的散列值进行对比
+
+
+# 数字签名的应用
+
+安全信息公告（明文签名）、软件下载、公钥证书、SSL/TLS
+
+
+# 对数字签名的攻击
+
+- 中间人攻击：对发送者伪装成接收者，对接受者伪装成发送者
+- 对单向散列函数的攻击
+- 利用数字签名攻击公钥密码（绝了 真是鬼才）：若Bob使用的RSA公钥通信的解密密钥（私钥）与Bob施加数字签名的私钥相同，则Mallory可以通过请求Bob对密文施加签名的方法得到消息的明文（请不要对你看不懂的合同签字盖章）
+- 其他攻击：针对公钥密码的攻击等
+
+
+
+
+---
+
+# 证书（PKC）
+
+公钥证书中记有姓名、组织、邮箱、地址等个人信息，以及属于此人的公钥，并由认证机构（CA）施加数字签名。只要看到公钥证书，我们就知道认证机构认定该公钥的确属于此人。
+
+
+# 为什么需要证书
+
+在用到公钥密码的场合，都存在__中间人攻击__。虽然理论上来讲公钥是“公开的”，但Mallory获取到他人的公钥，即可伪装成他人。因此，我们需要确认收到的公钥来自所期望的对象。认证机构就是能够认定“公钥确实属于此人”并能生成数字签名的个人或组织。
+
+
+# 证书的应用场景
+
+1. Bob生成密钥对
+2. Bob在认证机构Trent注册自己的公钥
+3. 认证机构Trent用自己的私钥对Bob的公钥施加数字签名并生成证书
+4. Alice得到带有认证机构Trent的数字签名的Bob的公钥（证书）
+5. Alice使用认证机构Trent的公钥验证数字签名，确认Bob的公钥的合法性
+6. Alice用Bob的公钥加密消息并发送给Bob
+7. Bob用自己的私钥解密密文得到Alice的消息
+8. 以后的通信，Alice可直接使用Bob的公钥
+
+
+# 公钥基础设施（PKI）
+
+是为了能够更有效地运用公钥而制定的一系列规范和规格的总称，包含用户（使用PKI的人）、认证机构（颁发证书的人，CA）、仓库（保存证书的数据库，repository）三个要素
+
+
+# 认证机构的工作（每一项都需要遵从一定的规范）
+
+- 生成密钥对：用户自行生成或由认证机构生成后发送给用户
+- 注册证书：根据认证业务准则（CPS）对用户的身份进行认证，使用认证机构的私钥进行数字签名并生成一定格式的证书（X.509规范）
+- 作废证书并列入作废证书清单（CRL），及时更新CRL
+
+
+# 证书间存在层级关系
+
+上层机构对下层机构的公钥施加数字签名并颁发证书。最高层的机构称为根CA（Root CA），根CA可以对自己的公钥施加数字签名（自签名）
+
+
+# 对证书的攻击
+
+- 在公钥注册之前（施加签名之前）进行攻击
+- 注册相似人名进行攻击
+- 窃取认证机构的私钥
+- 伪装成认证机构
+- 钻CRL的空子（时间差）进行攻击或否认
+
+
+
+是否信任认证机构，以及认证机构的认证业务准则（CPS）已属于社会学领域的范畴。
+
+
+
+
+
+---
+
+# 密钥（key）
+
+__密码的本质就是将较长的秘密（消息）变成较短的秘密（密钥）。__
+
+
+# 概念
+
+密钥本身是一个巨大的数字
+
+**密钥空间**的大小决定了**暴力破解**的困难度，**密钥长度**决定了密钥空间的大小
+
+密钥与明文是等价的
+
+信息的机密性不依赖于密码算法本身，而依赖于妥善保管的密钥
+
+
+
+
+# 种类
+
+
+### 确保机密性的密钥
+
+- [对称密码](agenda://note/AF96144E-AEEF-4D52-BF42-F81F60A8125C)：加密密钥 = 解密密钥（共享密钥密码）
+- [公钥密码](agenda://note/EF94C4BB-7DA2-4DBB-842A-1CE0154BBD82)：公钥（加密密钥）+ 私钥（解密密钥）= 密钥对
+
+
+### 用于认证的密钥
+
+- [消息认证码](agenda://note/E4FCB003-2833-4833-8B14-CE5B3272A460)：发送者与接收者共享密钥来进行认证
+- [数字签名](agenda://note/9D930DB3-1825-483B-B67C-0F6BCE6D3E69)：私钥用于生成签名，公钥用于验证签名
+
+
+### 按使用次数分
+
+- 会话密钥（session key）：每次通信只能使用一次，由PRNG生成（eg.SSL/TLS）
+- 主密钥（master key）：一直被重复使用
+
+
+### 按加密的对象分
+
+- CEK（Contents Encrypting Key，内容加密密钥）：加密消息（内容）
+- KEK（Key Encrypting Key，密钥加密密钥）：加密密钥
+
+
+
+
+# 密钥的管理
+
+
+### 生成密钥
+
+- 使用随机数（由密码学用途的PRNG生成）
+- 使用口令（password）：在口令上附加一串称为盐（salt）的随机数，再将其输入单向散列函数。这种方法称为“[基于口令的密码](agenda://note/7B2B5953-7E33-4A41-833D-82B3DB6F11F7)”（Password Based Encryption，PBE）
+
+
+### 配送密钥
+
+事先共享密钥、使用密钥分配中心、[使用公钥密码](agenda://note/EF94C4BB-7DA2-4DBB-842A-1CE0154BBD82)、[Diffie-Hellman密钥交换](agenda://note/05A3BB3B-7661-477A-838B-1354314666C3)
+
+
+### 更新密钥
+
+密钥更新技术（key updating）：定期改变密钥，用当前密钥的散列值作为下一个密钥。这样可以防止破译过去的通信内容，即保证后向安全（backward security）
+
+
+### 保存密钥
+
+KEK可以减少需要保管的密钥数量
+
+
+### 作废密钥
+
+密钥的作废和生成同等重要，因为密钥和明文是等价的
+
+
+
+
+
+---
+
+# Diffie-Hellman密钥交换
+
+1976年发明。__通信双方通过仅交换一些公开的信息就能够生成出共享的秘密数字，作为对称密码的密钥使用，双方并没有真正交换密钥，因此也称为Diffie-Hellman密钥协商。__（数学难题的计算复杂度被当成一种保障密码学安全问题的有效工具被利用起来，这一思想启发了RSA并贯穿现代密码学的许多加密算法）
+
+
+# 步骤
+
+1. Alice向Bob发送质数P和P的本原根G（geneator）
+2. Alice生成一个私有的随机数A，1⩽A⩽P−2
+3. Bob生成一个私有的随机数B，1⩽B⩽P−2
+4. Alice将 Ya = G^A mod P 发送给Bob
+5. Bob将 Yb = G^B mod P 发送给Alice
+6. Alice计算  Ka = Yb^A mod P，Bob计算  Kb = Ya^B mod P，易证：Ka = Kb
+
+
+# 攻击
+
+Eve知道的内容：P、G、Ya、Yb
+
+Eve不知道的内容：A、B、Ka（Kb）
+
+- 计算Ka或Kb需要知道A或B。在P为大质数的情况下，通过G^A mod P = Ya计算出A是相当困难的（有限群的离散对数问题）
+- 中间人攻击
+	- Mallory选定两个随机数S、T
+	- Mallory拦截Ya并向Bob发送 Ms = G^S mod P，拦截Yb并向Alice发送 Mt = G^T mod P
+	- Alice计算的 Ka’ = Mt^A mod P 与Mallory计算的 Ka‘ = Ya^T mod P 相等
+	- Bob计算的 Kb‘ = Ms^B mod P 与Mallory计算的 Kb’ = Yb^S mod P 相等
+	- 如果之后Alice和Bob用他们计算出的秘钥加密任何信息，Mallory截获之后都能够解密得到明文，而且Mallory完全可以伪装成Alice或者Bob给对方发送消息
+
+
+# 补充链接
+
+现代密码学中的数论基础知识梳理：[www.cnblogs.com/qcblog/p/8976017.html](https://www.cnblogs.com/qcblog/p/8976017.html)
+
+Diffie-Hellman密钥交换算法详细介绍：[www.cnblogs.com/qcblog/p/9016704.html](https://www.cnblogs.com/qcblog/p/9016704.html)
+
+阶和原根：[www.cnblogs.com/fzl194/p/9037947.html](https://www.cnblogs.com/fzl194/p/9037947.html)
+
+质数原根表：[tieba.baidu.com/p/4504701034?red_tag=3477490398](https://tieba.baidu.com/p/4504701034?red_tag=3477490398)
+
+
+
+
+
+---
+
+# 基于口令的密码（PBE）
+
+根据**口令**（password）生成密钥并用该密钥进行加密的方法。其中加密和解密使用同一个密钥
+
+
+# 加密步骤
+
+1. 生成KEK：PRNG生成一个称为**盐**（salt）的随机数，将盐和输入的口令一起输入单向散列函数，得到KEK
+2. 用PRNG生成会话密钥并用KEK加密，和盐一起保存在安全的地方。KEK在加密过会话密钥后就会被丢弃
+3. 用步骤2中生成的会话密钥对消息进行加密
+
+
+# 解密步骤
+
+1. 重建KEK
+2. 解密会话密钥
+3. 解密消息
+
+
+# 盐的作用
+
+盐是用来防御**字典攻击**（dictionary attack）的
+
+字典攻击：Mallory利用常见的口令，事先生成候选KEK并尝试解密
+
+
+# 口令的作用
+
+可以记在脑子里
+
+
+
+
+
+---
+
+# 随机数
+
+
+# 作用
+
+生成密钥、生成初始化向量（[分组密码](agenda://note/D34D215A-C8D1-4477-8F8D-58ADEEA8EE89)CBC、CFB、OFB模式）、生成nonce（[分组密码](agenda://note/D34D215A-C8D1-4477-8F8D-58ADEEA8EE89)CTR模式、防御[重放攻击](agenda://note/E4FCB003-2833-4833-8B14-CE5B3272A460)）、生成盐（[PBE](agenda://note/7B2B5953-7E33-4A41-833D-82B3DB6F11F7)）
+
+
+# 性质
+
+随机性->不可预测性->不可重现性（由弱到强递进）
+
+- 随机性（randomness）：看上去杂乱无章，不存在统计学偏差。具备随机性的伪随机数称为**弱伪随机数**
+- 不可预测性（unpredictability）：攻击者在知道过去生成的伪随机数列的前提下，依然无法预测出下一个生成出来的伪随机数（通过其他密码技术实现）。具备不可预测性的伪随机数称为**强伪随机数**
+- 不可重现性：没有周期，仅通过软件无法实现。具有不可重现性的随机数称为**真随机数**
+
+
+# 随机数生成器（Random Number Generator，RNG）
+
+通过传感器收集事实上无法预测的自然信息生成随机数列
+
+
+# 伪随机数生成器（Pseudo Random Number Generator，PRNG）
+
+可以生成随机数的软件
+
+
+### 结构
+
+具有“内部状态”，并通过外部输入的**种子**（seed）来生成伪随机数列（种子和内部状态是保密的，种子类似于密码算法的密钥，使用**随机数池**（random pool）中的真随机数作为种子）
+
+
+### 方法
+
+	M = 正整数;
+	A = 大于0且小于M的整数;
+	C = 大于0且小于M的整数;
+	内部状态 = 伪随机数的种子;
+	while(true){
+	伪随机数 = (A * 内部状态 + C) mod M;
+	内部状态 = 伪随机数;
+	输出伪随机数;
+	}
+
+- 单向散列函数法
+
+
+	计数器的初始值相当于种子，counter的值相当于内部状态
+	counter = 计数器初始值;
+	while(true){
+	伪随机数 = 用单向散列函数求counter的散列值;
+	输出伪随机数;
+	counter的值加1;
+	}
+
+- 密码法
+
+
+	key的值和随机数初始值的组合相当于伪随机数的种子
+	计数器的值相当于内部状态
+	key = 密码的密钥;
+	counter = 计数器初始值;
+	while(true){
+	伪随机数 = 用key加密的counter;
+	输出伪随机数;
+	counter的值加1;
+	}
+
+- ANSI X9.17
+
+
+	key的值和内部状态初始值的组合相当于伪随机数的种子
+	key = 加密密钥；
+	内部状态 = 内部状态初始值;
+	while(true){
+	掩码 = 用key加密的当前时间;
+	伪随机数 = 用key加密的“内部状态 XOR 掩码”;
+	输出伪随机数;
+	内部状态 = 用key加密的“伪随机数 XOR 掩码”;
+	}
+
+
+### 攻击
+
+- 对种子进行攻击
+- 对随机数池进行攻击
+
+
+
+
+---
+
+# 流密码与随机数
+
+伪随机数发生器（PRNG）
+
+- 产生不限长位流的算法称PRNG
+- 常用于对称流密码的输入
+
+伪随机函数（PRF）
+
+- 用于产生固定长度的伪随机位串
+- 常用于时间戳或密钥扩展中
+
+好的随机数性质：
+
+- 随机性
+- 不可预测性
+- 无法与真随机数区分（假设检验）
+
+算法
+
+- 线性同余发生器
+- BBS发生器 
+- 使用分组密码
+	- CTR
+	- OFB
+- ANSI X9.17（3DES）
+
+
+# 流密码
+
+定义：五元组PRG(k);m XOR PRG(k);c XOR PRG(k);M;C
+
+不满足完善的保密特性
+
+
+### 算法
+
+RC4 （不安全）
+
+- 从0-255中随机选择一个byte输出
+
+CSS （不安全）
+
+- 基于LFSR 
+
+eStream:salsa20
+
+- PRG:  {0,1}s  ×  R  ⟶   {0,1}n
+- Salsa20:    {0,1} 128 or 256  ×  {0,1}64  ⟶   {0,1}n (max n = 273 bits) 
+
+
+### 语义安全（Semantic security/密文的不可区分性）
+
+选择m1，m2，加密后获得c1，c2，猜中c与m的对应关系若大于50%则不具备语义安全性（选择明文攻击）
+
+ 
+
+
+# PRG,PRF和PRP的异同
+
+- PRF：伪随机函数
+- PRG（伪随机数发生器，PRNG）展示的是PRF的内部状态，不强调密钥k的存在
+- PRP是一种特殊的PRF，满足一对一映射和输入输出空间一致
+
+参看：[crypto.stackexchange.com/questions/3867/what-is-difference-between-prg-prf-and-prp](https://crypto.stackexchange.com/questions/3867/what-is-difference-between-prg-prf-and-prp)
+
+
+
+
+
+---
+
+# 密码软件PGP
+
+简介&背后的故事：[baijiahao.baidu.com/s?id=1619832404882238038&wfr=spider&for=pc](https://baijiahao.baidu.com/s?id=1619832404882238038&wfr=spider&for=pc)
+
+
+# 功能
+
+- 对称密码：包括AES、IDEA、CAST、3-DES、Blowfish、Twofish等，分组密码采用CFB模式
+- 公钥密码：RSA、ElGamal等
+- 数字签名：RSA、DSA等
+- 单向散列函数：MD5、SHA-1、RIPEMD-160等
+- 证书：可以生成OpenGPG中规定格式的证书
+- 压缩：采用ZIP格式
+- 文本数据：支持二进制和文本数据的相互转换
+- 大文件的拆分和拼合
+- 钥匙串管理
+
+
+# 加密和解密
+
+加密过程（混合密码系统）：生成和加密会话密钥 -> 压缩和加密消息
+
+解密过程（PBE、混合密码系统）：解密私钥 -> 解密会话密钥 -> 解密和解压缩消息
+
+
+# 数字签名
+
+生成：解密私钥 -> 生成数字签名
+
+验证：恢复发送者发送的散列值 -> 求消息的散列值 -> 对比
+
+
+### 组合起来：生成数字签名并加密/解密并验证数字签名
+
+
+# 信任网（web of trust）
+
+PGP的用户会互相为对方的公钥进行数字签名，即“不依赖认证机构，而是建立每个人之间的信任关系”。与证书的目的一样，信任网也是一种确认**公钥合法性**的方法
+
+在PGP中，用户可以设置对每个公钥所有者的**所有者信任（owner trust）**级别，共有六种级别：__绝对信任（本人）、完全信任、有限信任、不信任、未知、未设置。__
+
+对于本人和完全信任的所有者，其所签名的公钥会被认为是合法的
+
+对于有限信任的所有者，**复数**（这个数字可自定）所有者所签过名的公钥会被认为是合法的
+
+
+
+
+
+---
+
+# SSL/TLS
+
+SSL/TLS作为对通信进行加密的协议，利用数据加密技术，可确保数据在网络上的传输过程中的安全。并在此之上承载HTTP、SMTP、POP3等协议
+
+**TLS（Transport Layer Security，传输层安全协议）**相当于**SSL（Secure Socket Layer，安全套接字层）**的后续版本（相当于SSL 3.1）
+
+SSL/TLS协议提供的服务主要有：
+
+1. __认证__用户和服务器，确保数据发送到正确的客户机和服务器
+2. __加密数据__以防止数据中途被窃取
+3. 维护数据的__完整性__，确保数据在传输过程中不被改变
+
+
+# TLS流程
+
+由TLS记录协议（TLS record protocol）和TLS握手协议（TLS handshake protocol）叠加而成。位于底层的TLS记录协议负责进行加密，位于上层的TLS握手协议负责除加密以外的各种操作
+
+
+### TLS握手协议
+
+- **握手协议**
+	1. ClientHello（客户端➡️服务器）：客户端向服务器发送可用的版本号、当前时间、客户端随机数、会话ID、可用的套件密码清单、可用的压缩方式清单
+	2. ServerHello（客户端⬅️服务器）：服务器向客户端发送使用的版本号、当前时间、服务器随机数、会话ID、使用的密码套件、使用的压缩方式
+	3. Certificate（客户端⬅️服务器）：服务器向客户端发送证书清单（以匿名方式通信时，不发送该消息）
+	4. ServerKeyExchange（客户端⬅️服务器）：当Certificate消息不足以满足需求时，发送一些必要信息
+	5. CertificateRequest（客户端⬅️服务器）：服务器向客户端请求认证，发送服务器能够理解的证书名称和认证机构名称清单
+	6. ServerHelloDone（客户端⬅️服务器）：表示ServerHello的结束
+	7. Certificate（客户端➡️服务器）：若服务器向客户端请求认证，客户端发送自己的证书
+	8. ClientKeyExchange（客户端➡️服务器）：客户端发送经过加密的**预备主密码（pre-master secret）**这个值是由客户端生成的随机数，之后会被用作生成主密码的种子，然后再根据主密码生成**密钥素材**
+	9. CertificateVerify（客户端➡️服务器）：客户端证明自己的确持有客户端证书的私钥（对主密码和握手协议中传送的消息的散列值施加数字签名）
+	10. ChangeCipherSpec（客户端➡️服务器）：密码规格变更协议消息
+	11. Finished（客户端➡️服务器）：表示握手协议结束（消息内容是固定的，并通过商定的加密方式加密）
+	12. ChangeCipherSpec（客户端⬅️服务器）：密码规格变更协议消息
+	13. Finished（客户端⬅️服务器）：表示握手协议结束
+	14. 切换至应用数据协议
+- **密码规格变更协议**：用于同步密码切换。在密码通信开始之后，也可以通过重新握手的方式改变密码套件。（一开始相当于采用了“不加密”这一套件）
+- **警告协议**：用于发生错误时通知通信对象
+- **应用数据协议**：用于和通信对象之间传送应用数据
+
+
+### TLS记录协议
+
+位于TLS握手协议的下层，是负责使用对称密码对消息进行加密的部分
+
+
+# 主密码（master secret）
+
+由预备主密码、客户端随机数、服务器随机数计算而得，使用两个单向散列函数SHA-1和MD5组合而成的PRNG
+
+主密码用于生成以下信息：对称密码的密钥、消息认证码的密钥、对称密码的CBC模式所使用的初始化向量
+
+
+# 攻击
+
+- 对各个密码技术的攻击
+- 对伪随机数生成器的攻击
+- 利用证书的时间差进行攻击
+
+注意：
+
+- 拥有合法的证书不代表是值得信任的服务器
+- 密码通信前的数据不受保护
+- 密码通信后的数据不受保护
+
+
