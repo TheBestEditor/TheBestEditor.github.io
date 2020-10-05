@@ -5,9 +5,9 @@ subtitle:   "数据库笔记"
 date:       2020-09-27
 author:     "Shooting"
 header-img: "img/DataBase-bg.jpg"
+header-mask: 0.3
 catalog: true
-tags:
-	- 学习
+
 ---
 
 # 数据库转储
