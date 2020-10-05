@@ -7,8 +7,7 @@ author:     "Shooting"
 header-img: "img/DataBase-bg.jpg"
 header-mask: 0.3
 catalog: true
-tags:
-	- Study
+
 ---
 
 
@@ -71,7 +70,7 @@ E-R图：[www.jianshu.com/p/9ff938e3a498](https://www.jianshu.com/p/9ff938e3a498
 三种主要数据库模型：层次、网状、关系
 
 关系数据库的概念
-![avatar](img/DataBase-bg.jpg)
+![avatar](/img/in-post/post-database/关系数据库.png)
  
 
 - 候选码：关系中某一属性组的值能唯一标识一个元组，而其子集不能
@@ -150,7 +149,7 @@ ER图转关系模型：1:1的可独立可与任意一端合并；1:n可独立或
 数据更新：插入、删除、修改
 
 五种基本操作：选择、投影、并、差、笛卡尔积（能构成其他操作）
-![avatar](img/in-post/post-database/运算符号.png)
+![avatar](/img/in-post/post-database/运算符号.png)
  
 
 像集：给定一个关系R（X，Z），X和Z为属性组。当t[X]=x时，x在R中的象集为：Zx={t[Z]|t 属于R，t[X]=x}，它表示R中属性组X上值为x的诸元组在Z上分量的集合

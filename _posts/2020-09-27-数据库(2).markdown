@@ -95,7 +95,7 @@ catalog: true
 - 以数据块为单位：记录的是数据的修改
 
 注意：先写日志文件，后写数据库修改！
-![avatar](img/in-post/post-database/故障与恢复.png)
+![avatar](/img/in-post/post-database/故障与恢复.png)
  
 
 
@@ -142,7 +142,7 @@ catalog: true
 
 
 ### 封锁协议
-![avatar](img/in-post/post-database/封锁协议.png)
+![avatar](/img/in-post/post-database/封锁协议.png)
  
 
 
@@ -170,7 +170,7 @@ catalog: true
 
 - 扩展阶段：获得封锁，事务可以申请获得任何数据项上的任何类型的锁，但是不能释放任何锁
 - 收缩阶段：释放封锁，事务可以释放任何数据项上的任何类型的锁，但是不能再申请任何锁
-![avatar](img/in-post/post-database/封锁协议总结.png)
+![avatar](/img/in-post/post-database/封锁协议总结.png)
  
 
 
