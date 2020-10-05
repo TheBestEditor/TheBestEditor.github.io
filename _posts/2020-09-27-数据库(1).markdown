@@ -7,7 +7,8 @@ author:     "Shooting"
 header-img: "img/DataBase-bg.jpg"
 header-mask: 0.3
 catalog: true
-
+tags:
+	- Study
 ---
 
 
@@ -70,7 +71,7 @@ E-R图：[www.jianshu.com/p/9ff938e3a498](https://www.jianshu.com/p/9ff938e3a498
 三种主要数据库模型：层次、网状、关系
 
 关系数据库的概念
-![avatar](img/in-post/post-database/关系数据库.png)
+![avatar](img/DataBase-bg.jpg)
  
 
 - 候选码：关系中某一属性组的值能唯一标识一个元组，而其子集不能
